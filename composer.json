@@ -1,0 +1,14 @@
+{
+    "autoload":{
+      "psr-4": {
+        "App\\" : "src/"
+      }
+    },
+    "require": {
+        "slim/slim": "^4.5",
+        "slim/psr7": "^1.2.0",
+        "slim/http": "^1.0.0",
+        "php-di/php-di": "^6.3",
+        "mustache/mustache": "^2.13"
+    }
+}

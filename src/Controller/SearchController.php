@@ -20,11 +20,6 @@ class SearchController extends VintedController
       $args['order'] = $sort; //relevance; newest_first; price_low_to_high; price_high_to_low
     }
 
-    $vinted = $this->search($request, $response, $args);
-    $pagination = $vinted['pagination'];
-    //var_dump($pagination);
-    $items = $vinted['items'];
-
     if ($sort == 'fav') {
       //sortowanie po ulub
       $cookie = $this->get_cookie("https://www.vinted.pl/");
@@ -39,10 +34,8 @@ class SearchController extends VintedController
         $items = array_merge($items, $dat["items"]);
       }
 
-
       print_r(count($items));
-      print_r($pagination);
-      // print_r($items);
+      print_r($data['pagination']);
       //sortowanie, które wcześniej zrobiłem po $items
       //wybranie 46 pierwszych itemów z listy
       //wyświetlenie ich
@@ -52,41 +45,13 @@ class SearchController extends VintedController
         }
         return ($a["favourite_count"] > $b["favourite_count"]) ? -1 : 1;
       });
+    } else {
+      $vinted = $this->search($request, $response, $args);
+      $pagination = $vinted['pagination'];
+      //var_dump($pagination);
+      $items = $vinted['items'];
     }
 
-
-
-    //sortowanie na podstawie ?sort 
-    // ...
-
-    /*switch ($sort) {
-      case "price":
-        usort($items, function ($a, $b) {
-          if ($a["price"] == $b["price"]) {
-            return 0;
-          }
-          return ($a["price"] < $b["price"]) ? -1 : 1;
-        });
-        break;
-
-      case "nprice":
-        usort($items, function ($a, $b) {
-          if ($a["price"] == $b["price"]) {
-            return 0;
-          }
-          return ($a["price"] > $b["price"]) ? -1 : 1;
-        });
-        break;
-
-      case "fav":
-        usort($items, function ($a, $b) {
-          if ($a["favourite_count"] == $b["favourite_count"]) {
-            return 0;
-          }
-          return ($a["favourite_count"] > $b["favourite_count"]) ? -1 : 1;
-        });
-        break;
-    }*/
 
     if (!$currentPage) {
       $currentPage = 1;
@@ -105,22 +70,4 @@ class SearchController extends VintedController
 
     ]);
   }
-
-  /*public function form(Request $request, Response $response)
-  {
-    $albums = json_decode(__DIR__ . '/../../data/red.json', true);
-
-    $query = $request->getParam('q');
-    if ($query) {
-      $albums = array_values(array_filter($albums, function ($album) use ($query) {
-        return strpos($album['title'], $query) !== false ||
-          strpos($album['artist'], $query) !== false;
-      }));
-    }
-
-    return $this->render($response, 'form.html', [
-      'albums' => $albums,
-      'query' => $query
-    ]);
-  }*/
 }

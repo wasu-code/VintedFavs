@@ -23,11 +23,12 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 
 $app->get('/', '\App\Controller\SearchController:homepage');
-$app->get('/vinted', '\App\Controller\VintedController:search');
-$app->get('/vinted/', '\App\Controller\VintedController:search');
-$app->get('/{query}', '\App\Controller\SearchController:default');
+//$app->get('/vinted', '\App\Controller\VintedController:search');
+//$app->get('/vinted/', '\App\Controller\VintedController:search');
 $app->get('/vinted/{query}', '\App\Controller\VintedController:search');
 $app->get('/vinted/{query}/{cnt:[0-9]+}', '\App\Controller\VintedController:search');
+$app->get('/{query}', '\App\Controller\SearchController:default');
+$app->get('/{query}/{cnt:[0-9]+}', '\App\Controller\SearchController:default');
 
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 $errorMiddleware->setErrorHandler(

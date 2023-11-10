@@ -5,13 +5,13 @@
 <form onsubmit="submitForm(); return false;">
     <input type="text" name="q" id="searchInput" aria-label="Search" value="{{query}}" placeholder="Rower" />
     <select name="sort" id="sortSelect">
-        <option value="price">Cena (rosnąco)</option>
-        <option value="nprice">Cena (malejąco)</option>
-        <option value="relevance">Relevance</option>
-        <option value="date">Date</option>
+        <option value="relevance" default>Trafność</option>
+        <option value="price_high_to_low">Cena (malejąco)</option>
+        <option value="price_low_to_high">Cena (rosnąco)</option>
+        <option value="newest_first">Najnowsze</option>
         <option value="fav">Ulubione</option>
-        <!-- Add more options based on your sorting criteria -->
     </select>
+    <input type="text" name="page" id="pageInput" aria-label="Page" value="{{page}}"/>
     <button type="submit">Search</button>
 </form>
 
@@ -32,9 +32,10 @@
     function submitForm() {
         var searchInputValue = document.getElementById("searchInput").value;
         var sortSelectValue = document.getElementById("sortSelect").value;
+        var pageInputValue = document.getElementById("pageInput").value;
 
         // Construct the URL with the search parameter and sort parameter
-        var url = "/" + encodeURIComponent(searchInputValue) + "?sort=" + encodeURIComponent(sortSelectValue);
+        var url = "/" + encodeURIComponent(searchInputValue) + "?sort=" + encodeURIComponent(sortSelectValue) + "&page=" + encodeURIComponent(pageInputValue);
 
         // Redirect to the constructed URL
         window.location.href = url;

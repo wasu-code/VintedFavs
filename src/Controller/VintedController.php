@@ -96,22 +96,15 @@ class VintedController extends Controller
     if (isset($args['query']) && isset($args['cnt'])) {
       $query = $args['query'];
       $cnt = $args['cnt'];
+      if (isset($args["order"])) {
+        $order = $args['order'];
+      } else {
+        $order = 'relevance';
+      }
       if ($query && $cnt) {
         $cookie = $this->get_cookie("https://www.vinted.pl/");
         for ($x = 0; $x <= 10; $x++) {
-          $data = json_decode($this->get_web_page('https://www.vinted.pl/api/v2/catalog/items?search_text=' . $query . '&page=' . $cnt, '_vinted_fr_session=' . $cookie), true);
-          if (count($data['items']) != 0) {
-            break;
-          }
-        }
-      }
-      return $response->withJson($data);
-    } else if (isset($args['query'])) {
-      $query = $args['query'];
-      if ($query) {
-        $cookie = $this->get_cookie("https://www.vinted.pl/");
-        for ($x = 0; $x <= 10; $x++) {
-          $data = json_decode($this->get_web_page('https://www.vinted.pl/api/v2/catalog/items?search_text=' . $query, '_vinted_fr_session=' . $cookie), true);
+          $data = json_decode($this->get_web_page('https://www.vinted.pl/api/v2/catalog/items?search_text=' . $query . '&page=' . $cnt . '&order=' . $order, '_vinted_fr_session=' . $cookie), true);
           if (count($data['items']) != 0) {
             break;
           }
@@ -119,11 +112,24 @@ class VintedController extends Controller
       }
       return $data;
       //return $response->withJson($data);
-      /*$items = $data['items'];
-
-      return $this->render($response, 'search.html', [  // render response using 'search.html' template with data of 'items'
-        'items' => $items
-      ]);*/
+    } else if (isset($args['query'])) {
+      $query = $args['query'];
+      if (isset($args["order"])) {
+        $order = $args['order'];
+      } else {
+        $order = 'relevance';
+      }
+      if ($query) {
+        $cookie = $this->get_cookie("https://www.vinted.pl/");
+        for ($x = 0; $x <= 10; $x++) {
+          $data = json_decode($this->get_web_page('https://www.vinted.pl/api/v2/catalog/items?search_text=' . $query . '&order=' . $order, '_vinted_fr_session=' . $cookie), true);
+          if (count($data['items']) != 0) {
+            break;
+          }
+        }
+      }
+      return $data;
+      //return $response->withJson($data);
     } else {
       return $response->withStatus(400)->withJson(['error' => 'Invalid query']);
     }

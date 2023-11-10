@@ -3,8 +3,10 @@
 <h1>Search</h1>
 
 <form onsubmit="submitForm(); return false;">
-    <input type="text" name="q" id="searchInput" aria-label="Search" value="{{query}}" placeholder="Rower">
-    <select name="sort"  id="sortSelect">
+    <input type="text" name="q" id="searchInput" aria-label="Search" value="{{query}}" placeholder="Rower" />
+    <select name="sort" id="sortSelect">
+        <option value="price">Cena (rosnąco)</option>
+        <option value="nprice">Cena (malejąco)</option>
         <option value="relevance">Relevance</option>
         <option value="date">Date</option>
         <option value="fav">Ulubione</option>
@@ -14,31 +16,29 @@
 </form>
 
 <div class="albums">
-  {{#items}}
+    {{#items}}
     <a href="{{url}}">
-      <h2>{{title}}</h2>
-      {{#photo}}
-        <img src="{{url}}" alt="zdjęcie"/>
-      {{/photo}}
-      <p>{{price}} {{currency}}</p>
-      <p>💗{{favourite_count}}</p>
+        <h2>{{title}}</h2>
+        {{#photo}}
+        <img src="{{url}}" alt="zdjęcie" />
+        {{/photo}}
+        <p>{{price}} {{currency}}</p>
+        <p>💗{{favourite_count}}</p>
     </a>
-  {{/items}}
+    {{/items}}
 </div>
 
 <script>
     function submitForm() {
-        var searchInputValue = document.getElementById('searchInput').value;
-        var sortSelectValue = document.getElementById('sortSelect').value;
+        var searchInputValue = document.getElementById("searchInput").value;
+        var sortSelectValue = document.getElementById("sortSelect").value;
 
         // Construct the URL with the search parameter and sort parameter
-        var url = '/' + encodeURIComponent(searchInputValue) + '?sort=' + encodeURIComponent(sortSelectValue);
+        var url = "/" + encodeURIComponent(searchInputValue) + "?sort=" + encodeURIComponent(sortSelectValue);
 
         // Redirect to the constructed URL
         window.location.href = url;
     }
-
-
 
     // Function to get URL parameter by name
     function getParameterByName(name, url) {
@@ -47,16 +47,16 @@
         var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
             results = regex.exec(url);
         if (!results) return null;
-        if (!results[2]) return '';
+        if (!results[2]) return "";
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
     // Get the value of the 'sort' parameter from the URL
-    var sortParam = getParameterByName('sort');
+    var sortParam = getParameterByName("sort");
 
     // Set the selected attribute for the corresponding option
     if (sortParam) {
-        var sortSelect = document.getElementById('sortSelect');
+        var sortSelect = document.getElementById("sortSelect");
         var option = sortSelect.querySelector('option[value="' + sortParam + '"]');
         if (option) {
             option.selected = true;

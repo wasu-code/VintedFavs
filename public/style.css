@@ -6,9 +6,20 @@ body {
 
 header {
   border-bottom: #999 1px solid;
-  font-size: 200%;
+  border-radius: 1em;
   font-weight: bold;
   padding-bottom: 12px;
+  background-color: #467575;
+}
+
+header H1 {
+  padding-left: 15px;
+  font-size: 200%;
+}
+
+header p {
+  padding-left: 15px;
+  margin-bottom: 0px;
 }
 
 header span {
@@ -66,14 +77,6 @@ footer .container {
 footer .container p {
   padding: 0;
   margin: 0;
-}
-
-header {
-  background-color: #467575;
-}
-
-header H1 {
-  padding-left: 15px;
 }
 
 main {

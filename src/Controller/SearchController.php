@@ -13,7 +13,7 @@ class SearchController extends VintedController
         session_start();
 
         // Pobieranie parametrów z zapytania
-        $currentPage = $request->getQueryParam('page');
+        $currentPage = $request->getQueryParam('page') ?? 1;
         $sort = $request->getQueryParam('sort');
         $sort = $request->getQueryParam('sort');
         if ($sort && $sort != 'fav') {

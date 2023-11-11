@@ -27,7 +27,9 @@
             <option value="fav">Ulubione</option>
           </select>
         <div class="input-group-append">
-          <button class="btn" type="submit">Przejdź</button>
+          <button class="btn" id="searchBtn" type="submit">Przejdź
+            <span class="loader"></span>
+          </button>
         </div>
     </div>
   </form>
@@ -73,7 +75,11 @@
 
         // Construct the URL with the search parameter and sort parameter
         var url = "/" + encodeURIComponent(searchInputValue) + "?sort=" + encodeURIComponent(sortSelectValue) + "&page=" + encodeURIComponent(pageInputValue);
-
+        
+        var button = document.querySelector('#searchBtn');
+        button.classList.add('loading');
+        button.setAttribute('disabled', 'true');
+        
         // Redirect to the constructed URL
         window.location.href = url;
     }

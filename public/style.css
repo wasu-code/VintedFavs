@@ -55,53 +55,54 @@ img {
   max-width: 100%;
 }
 
-footer{
+footer {
   background-color: #467575;
 }
 
-footer .container{
+footer .container {
   padding-top: 15px;
 }
 
 footer .container p {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
-header{
+header {
   background-color: #467575;
 }
 
 header H1 {
-  padding-left: 15px ;
+  padding-left: 15px;
 }
 
-main{
+main {
   padding: 20px 0;
 }
 
-.albums .card {
+.albums .card img {
   width: 18em;
   height: 18em;
-  align-items:center;
+  align-items: center;
 }
 
-form .search{
+form .search {
   width: 25em;
   padding: 2px 15px;
   border: 1px solid #ced4da;
 }
 
-form .page_number{
+form .page_number {
   width: 10em;
   padding: 2px 15px;
   border: 1px solid #ced4da;
 }
-form .select_filtr{
+
+form .select_filtr {
   width: 10em;
   padding: 2px 15px;
   border: 1px solid #ced4da;
-  
+
 }
 
 form .btn {
@@ -109,5 +110,3 @@ form .btn {
   color: #fff;
   padding: 2px 15px;
 }
-
-

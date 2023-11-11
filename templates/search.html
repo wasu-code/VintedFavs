@@ -11,7 +11,7 @@
         <option value="newest_first">Najnowsze</option>
         <option value="fav">Ulubione</option>
     </select>
-    <input type="text" name="page" id="pageInput" aria-label="Page" value="{{page}}"/>
+    <input type="number" name="page" id="pageInput" aria-label="Page" value="{{page}}" min="1" max="999" step="1" />
     <button type="submit">Search</button>
 </form>
 

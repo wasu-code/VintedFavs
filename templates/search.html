@@ -15,12 +15,12 @@
 
 -->
 
-<form class="form-inline">
+<form class="form-inline" onsubmit="submitForm(); return false;">
     <div class="input-group ml-2">
         <input class="search" type="text" name="q" id="searchInput" aria-label="Search" value="{{query}}" class="form-control" placeholder="Szukaj produktów...">
         <input class="page_number" type="number" class="form-control" type="text" name="page" id="pageInput" aria-label="Page" value="{{page}}" placeholder="Numer strony">
         <select  name="sort" id="sortSelect" class="form-select form-control select_filtr" aria-label="Filtrowanie">
-            <option selected >Filtrowanie</option>
+            <option value="relevance" >Filtrowanie</option>
             <option value="price_high_to_low">Cena (malejąco)</option>
             <option value="price_low_to_high">Cena (rosnąco)</option>
             <option value="newest_first">Najnowsze</option>

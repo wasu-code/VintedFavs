@@ -9,27 +9,45 @@ class SearchController extends VintedController
 {
     public function default(Request $request, Response $response, array $args)
     {
+        // Inicjalizacja sesji
+        session_start();
+
         // Pobieranie parametrów z zapytania
         $currentPage = $request->getQueryParam('page');
         $sort = $request->getQueryParam('sort');
+        $sort = $request->getQueryParam('sort');
+        if ($sort && $sort != 'fav') {
+          $args['order'] = $sort; //relevance; newest_first; price_low_to_high; price_high_to_low
+        }
         $query = $args['query'];
 
-        // Domyślne ustawienia
-        $args['cnt'] = $currentPage ?? 1;
-        $args['order'] = $sort && $sort !== 'fav' ? $sort : 'relevance';
+        // Sprawdzenie, czy zmieniono sortowanie lub frazę wyszukiwania
+        $sortChanged = $sort !== $_SESSION['current_sort'] ?? null;
+        $queryChanged = $query !== $_SESSION['current_query'] ?? null;
 
-        // Sortowanie po ulubionych
-        if ($sort == 'fav') {
-            $items = $this->getFavoriteItems($query);
-        } else {
-            // Wyszukiwanie z uwzględnieniem frazy
-            $vinted = $this->search($request, $response, $args);
-            $items = $vinted['items'];
+        // Jeśli zmieniono sortowanie lub frazę wyszukiwania, pobierz nowe wyniki
+        if ($sortChanged || $queryChanged) {
+            $_SESSION['current_sort'] = $sort;
+            $_SESSION['current_query'] = $query;
+
+            // Sortowanie po ulubionych
+            if ($sort == 'fav') {
+                $_SESSION['items'] = $this->getFavoriteItems($query);
+            } else {
+                // Wyszukiwanie z uwzględnieniem frazy
+                $vinted = $this->search($request, $response, $args);
+                $_SESSION['items'] = $vinted['items'];
+            }
         }
+
+        // Paginacja wyników
+        $perPage = 46;
+        $startIndex = ($currentPage - 1) * $perPage;
+        $pagedItems = array_slice($_SESSION['items'], $startIndex, $perPage);
 
         // Wyświetlanie wyników
         return $this->render($response, 'search.html', [
-            'items' => array_slice($items, 0, 46), // Wybieranie 46 pierwszych elementów
+            'items' => $pagedItems,
             'query' => $query,
             'page' => $currentPage ?? 1
         ]);
@@ -37,8 +55,14 @@ class SearchController extends VintedController
 
     public function homepage(Request $request, Response $response)
     {
+        // Inicjalizacja sesji
+        session_start();
+
         // Wyświetlanie strony domowej
-        return $this->render($response, 'search.html', []);
+        return $this->render($response, 'search.html', [
+            'items' => $_SESSION['items'] ?? [],
+            'page' => $_SESSION['current_page'] ?? 1
+        ]);
     }
 
     private function getFavoriteItems($query)

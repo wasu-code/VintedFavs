@@ -20,6 +20,11 @@ class SearchController extends VintedController
           $args['order'] = $sort; //relevance; newest_first; price_low_to_high; price_high_to_low
         }
         $query = $args['query'];
+        $pageArgs = [
+            'query' => $query,
+            'cnt' => $currentPage,
+            'order' => $sort
+        ];
 
         // Sprawdzenie, czy zmieniono sortowanie lub frazę wyszukiwania
         $sortChanged = $sort !== $_SESSION['current_sort'] ?? null;
@@ -33,17 +38,23 @@ class SearchController extends VintedController
             // Sortowanie po ulubionych
             if ($sort == 'fav') {
                 $_SESSION['items'] = $this->getFavoriteItems($query);
-            } else {
-                // Wyszukiwanie z uwzględnieniem frazy
-                $vinted = $this->search($request, $response, $args);
-                $_SESSION['items'] = $vinted['items'];
             }
+        }
+
+        if($sort != 'fav') {
+            $_SESSION['current_page'] = $currentPage;
+            $vinted = $this->search($request, $response, $pageArgs);
+            $_SESSION['items'] = $vinted['items'];
         }
 
         // Paginacja wyników
         $perPage = 46;
         $startIndex = ($currentPage - 1) * $perPage;
-        $pagedItems = array_slice($_SESSION['items'], $startIndex, $perPage);
+        if($sort == "fav") {
+            $pagedItems = array_slice($_SESSION['items'], $startIndex, $perPage);
+        } else {
+            $pagedItems = array_slice($_SESSION['items'], 0, $perPage);
+        }
 
         // Wyświetlanie wyników
         return $this->render($response, 'search.html', [

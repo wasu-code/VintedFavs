@@ -14,7 +14,7 @@ class SearchController extends VintedController
 
         // Pobieranie parametrów z zapytania
         $currentPage = $request->getQueryParam('page') ?? 1;
-        $sort = $request->getQueryParam('sort');
+        $currentPage = isset($currentPage) && is_numeric($currentPage) ? (int)$currentPage : 1;
         $sort = $request->getQueryParam('sort');
         if ($sort && $sort != 'fav') {
           $args['order'] = $sort; //relevance; newest_first; price_low_to_high; price_high_to_low
@@ -27,8 +27,8 @@ class SearchController extends VintedController
         ];
 
         // Sprawdzenie, czy zmieniono sortowanie lub frazę wyszukiwania
-        $sortChanged = $sort !== $_SESSION['current_sort'] ?? null;
-        $queryChanged = $query !== $_SESSION['current_query'] ?? null;
+        $sortChanged = $sort !== ($_SESSION['current_sort'] ?? null);
+        $queryChanged = $query !== ($_SESSION['current_query'] ?? null);
 
         // Jeśli zmieniono sortowanie lub frazę wyszukiwania, pobierz nowe wyniki
         if ($sortChanged || $queryChanged) {

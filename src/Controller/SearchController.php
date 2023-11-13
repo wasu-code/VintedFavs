@@ -15,6 +15,7 @@ class SearchController extends VintedController
         // Pobieranie parametrów z zapytania
         $currentPage = $request->getQueryParam('page') ?? 1;
         $currentPage = isset($currentPage) && is_numeric($currentPage) ? (int)$currentPage : 1;
+        if($currentPage<1) {$currentPage = 1;}
         $sort = $request->getQueryParam('sort');
         if ($sort && $sort != 'fav') {
           $args['order'] = $sort; //relevance; newest_first; price_low_to_high; price_high_to_low
